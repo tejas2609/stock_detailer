@@ -1,0 +1,32 @@
+.navbar-container{
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+.navbar-content{
+    width: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    .left-content{
+        font-family: title-text;
+        .logo{
+            letter-spacing: 0.1rem;
+        }
+    }
+    .right-content{
+        .icons{
+            display: flex;
+            gap: 1rem;
+            .icon{
+                mat-icon{
+                    color: rgb(237, 237, 237);
+                }
+                :hover{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

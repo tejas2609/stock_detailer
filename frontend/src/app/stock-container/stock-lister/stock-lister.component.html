@@ -1,0 +1,6 @@
+<div class="stock-selector-container"> 
+    <p>Select a stock</p>
+    <select (scroll)="onScroll($event)">
+        <option *ngFor="let stock of stocks" [value]="stock.symbol" >{{stock.symbol}}</option>
+    </select>
+</div>
