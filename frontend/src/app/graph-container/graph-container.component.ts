@@ -20,7 +20,7 @@ import * as d3 from 'd3';
 })
 export class GraphContainerComponent implements OnInit, AfterViewInit {
   resp = {
-    name: 'Reliance Industries',
+    name: 'Tata Power',
     type: 'root',
     children: [
       {
@@ -28,25 +28,28 @@ export class GraphContainerComponent implements OnInit, AfterViewInit {
         type: 'theme',
         children: [
           {
-            name: "Moody's Upgrades Reliance",
-            id: '652928866e05cf98c06a6600b45b2f16',
-            source: 'The Economic Times',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMi_AFBVV95cUxNVmNfY2tEeG5nU25Xd2JmenltdHJubVNMQ25WSHBIS2J6WHhNZkxTdFhkaWZnTDZIM1lwalNlN1ZoVVUxUWpYNldTRFR6WHR5RzkyOUxLX3RveTluNGNnRmFuNF8wbjZWcEpJRHhOMzVCSk5nSGRqTHYxbHZGdDB4bkxwLWotWi1UenFJNkJ6V2p2M0VWYk1iNWRSQVFhbjk3MUpCOGVRRzVnME5wWGxtNHRGQVJPaGJ4U3h5M2hXTTRVQzJaR3J3NXFFSm1kM2VMc1BXSU85SUhIUGV1S3RvQTc1VTRTUGRKZWJSZjdUWUZsZjFkU0xVbkJZMFnSAYICQVVfeXFMTWpqV3JZX215QmtlWnhtTkpXVUx4RHJWQnVILUVqMDhhV202c1JVaVdBVlEzYjNNM2RacG1IbWtpYWNSRUZ4ZDFYb0ZuVkxWdG16anhGOVNqY1FEaHhiLVdSVHlxTFZXaDFGdE5XSkRORlNJbDhQLTJzd0twM2ZWUEI3WUV4YU9oU0ljSlVyQXhqbWpVSE0xWVBFUnp1SUFYaTRwcl9wYVR1ZGUteDB3ZVdVZEg1LThBWC1ZTXhVTTZSVUF2RTlxS2Vfdm9zd25uSnFyQzdVRi1iZi1WX0lVcXFfRm9Sc2FzT1B5U1ZXdzJCYVVvbkFOUG1VYUtid3pESmlR?oc=5',
+            name: 'Tata Power Company Q2 Results 2026',
+            id: 'dedcf57b7f1448b4d4234004387b1701',
           },
           {
-            name: 'Reliance Industries Ltd Sees High Value Trading Amid Mixed Market Sentiment',
-            id: '3b5f2560f4726e3262b464ed2131c639',
-            source: 'Markets Mojo',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMizgFBVV95cUxQd0d5TXZtMHB0V0VvakRSZDQwQll1dkxwSXNwVHQ2TksxWFFkRmNSb2RqU0dCYjNLTF9TQkZva0dqeWd0WGpHekFTRi1QQmFSTE91YWYwVW50dHJlcTJTSXFWNjdNUXBVWnFfZmd1SkE5X2lvanJGeHB3STJOVC0wN0ljUDIwRWFqNEJRYl9CVWJrTFlza3ZFc1Y4MEp1cC1hZUNRVF9DS0paN2s2amlxZGZqRklNUm91Tmk3YVl0aFZUcW9ZQld1Z3RURVY3QQ?oc=5',
+            name: 'Tata Power down: Despite record high FY26 profit, why shares got downgrade call ...',
+            id: '2ed21e99a361f23866584bd7f18ff10c',
           },
           {
-            name: 'Reliance Industries annual report 2026: Key insights, growth outlook, and what i...',
-            id: '9382de8258a0e5a72a8d81ddddbafb3f',
-            source: 'Upstox',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMi7gFBVV95cUxQdEl4VEtQUG55VHJrWTIyZmV4a2phYV9ZVXh3QmJYV1h1ZDFDNW5SSGZ6clpmb0RLWDZHSnMyYzJVWnJycXNRcV9UODk0V1JWQ2JIb056S0RnM3I4R3F6bjVqT0szU0pOWmtGVGw1dlBxSHhNbnVSbmJjNWxVN2RoMjIzQ09sd09QY09qeGpSZlZ2R2Q1WUxTVGExcWlwZ0lydFNaQUtPNGxwNFdZMkJJOGJ4UHAwYk5rT3JacFJuMDRDUUp3dlp6cExJWjl1V1l3UFBNWFNtYVlROXcxdkM2M1B2R2pZOFBwT05hdHNB?oc=5',
+            name: 'Tata Power Company Ltd Technical Momentum Shifts Amid Mixed Indicator Signals - ...',
+            id: '94bf70563c56fe44470b0995b214ad15',
+          },
+          {
+            name: 'Tata Power Sees Surge in Call Option Activity Amid Bullish Momentum - Markets Mo...',
+            id: '31a54289c989578332a4e771be66d259',
+          },
+          {
+            name: 'Tata Power Company Ltd is Rated Sell - Markets Mojo',
+            id: '76f67230fd7e6dd0d68c67b2e331334e',
+          },
+          {
+            name: 'Tata Power Company Ltd Valuation Shifts Amidst Market Rally - Markets Mojo',
+            id: '382f0d64878c8e723fcd9c93ead7aa94',
           },
         ],
       },
@@ -55,42 +58,58 @@ export class GraphContainerComponent implements OnInit, AfterViewInit {
         type: 'theme',
         children: [
           {
-            name: 'Ambani Says Reliance Evaluating ‘Strategic Pathways’ for Jio, No Word on IPO',
-            id: '412d936dd0a4e6b47cf190edcc88b759',
-            source: 'Bloomberg.com',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMiwgFBVV95cUxPWGdaNEZELTUxS25mblhYWkZ3RUx2eHh2Vk85eFFndUpLRHlJUm83ejY0NlhHekI5SklEdDJNYWotcEw4ZjVYTHJEYzNVbEJTUkdJS3c4b2ZXLUFDSVpVa0dGNUJXNjlFSjM5SnNKdk5fRllqdTdTTjNlakMyaTVyTVhnbFBxVGdhb1pwbkkwdlVpaTAwdUxJNGNXNjRyVVlsWnlJNXNERU0xZDNDUjcyc21yWkk1dkROWEY3VHJmMGMzZw?oc=5',
+            name: 'Tata Power sets July 7 for 107th AGM via video conference - scanx.trade',
+            id: 'e969f425316197e0c8d350b22cdd7a23',
           },
           {
-            name: 'Reliance Industries charts Jio IPO and new energy plans with battery, hydrogen r...',
-            id: '617b88b4afd3d846b8a33b21950761bc',
-            source: 'Telegraph India',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMi0gFBVV95cUxQOVdhYzYyWGZ4Zi1UZzVMLW0yR3lfMjBUOVFGQUFPZUVLSzVHa213d09iOEVLNkZqZ1g3QXRZbS0ycmsyZWdPV29PTmJVZFYwb0tER1ZNSWhPNDFrMVFSbDlPa3p1N1RyRXNOeHJ6RW85N3lGUEtNTVhsQjRTdThLYWx3bGFtZkhJUjduUGlrWVRKT28xS0c2T2ZIZG9pVUM0Z0tiajFvNFpBMldQN0lzMjM4cHNCZS1lY3hKeXQ2b2tyTHZ4OFRiY1o0WWZhMFdCclHSAdcBQVVfeXFMTU5FRE91MGhUVFEyQ1BzMm9VTkZJSW1XZndWcUl2YW83YWhSZ2FaQnZ1SXdsdXFOUlo0UWpRS09IMmdnM3ZQLTYxZkdKTWRTNnIwVUt1YUQ2QWZ6T0Roak82N1V1Q1lGUENER1pBdkpEVENSY2FKUGxsNmVsY3ZtNG42X2xNNVpEaEtBSzhfTm1ObEUtbVpIcWpqVWZ5WTNVcG1ueFIyMjJpMTVWSnpWWnY4OUpvLW9GUnM0TWVtNG05TFI1eWh6cTllYkw2VlVPRS10X2VmT1E?oc=5',
+            name: 'UPPCL gets UPERC nod to import electricity from Tata Power-DGPC project in Bhuta...',
+            id: '0fcd908d98c66b7a431a7db6f28c46d9',
           },
         ],
       },
       {
-        name: 'Regulatory Issues',
+        name: 'Renewable Projects',
         type: 'theme',
         children: [
           {
-            name: 'SC Sets Aside SEBI’s ₹447.27 Crore Disgorgement Order Against Reliance Industrie...',
-            id: 'b9046489a8c2ed5745b11884dc402c40',
-            source: 'LawStreet Journal',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMirAFBVV95cUxPQ1RPUmlOYjIwWjFYc19feUVoVGtXTXNfNjdIZDB1RGY4dXV4S3FUQlk0SVRhOE55c2YxT0R1dmN3WlBPUGZhQ1g2Mkc0Z2NCc1FGdmZYU2ZhR0c2M1pGbFVkRXNDUl8zTXhaZlVNZEhuTl9DbHdZSkItSmFoTXhZN0R2b24yVGIyMUlwc3h1QnBpcW9mZjgyWFpZazJWd3lGc0w0UkRxaElyVjlO?oc=5',
+            name: 'Tata Power, NHPC, Acme Solar, JSW Energy, NTPC, CESC: Target prices as valuation...',
+            id: 'd02d49277dcd3828137943f79eda0fb1',
           },
           {
-            name: 'Supreme Court sets aside order directing Reliance Industries to disgorge ₹447 cr...',
-            id: 'a2f2a0a3f2162200166ca9fd4a118855',
-            source: 'The Hindu',
-            type: 'article',
-            url: 'https://news.google.com/rss/articles/CBMi2AFBVV95cUxNdmdCdmZUTmtVMzN6aHAxT0tMNEdqOVllSzVRemxwNF91LU1zRHdXUGRDN29Ud1c3VnZOZGF2bE9LWjlzVUxzU0tDWjBqb2tGNHJYNGFYSk1tOW1iQlRmejlKTGlHekI2MlRvaU90SHlDMUpjMlVrZjBJOTVIejNyMkQxelZTRDFRUlJtWHl3N1ZtOHBYRjAzdC1waFkyZWNhSXdxMnJ3c0g4aGhRb2wzbzRya1NsUVNSVDh2VEF4U3k2TjRSQzI1Z0hJQVRMWUlLbUpPcFNMbG_SAd8BQVVfeXFMTTc0cV9ZRFVYbHN3aDNGQ1JzMU53Y0hUZEJWNHRiRVRKaWl1UU5zMlJCd004czg1REhmWHhBR2h6TVhiWHR3cEFYQmhVTDloZHRDUmlFN1FQdXpXN211MDhEeXc0cUdSMmxrNUdaR1JPdlhCVU1XYS1RMFJORUpITlF5Wk16QjdRaTl4clpCdU5hekVFQ2tDUTdpTjFaZ25UNHVVUC0tSHRRS0x0ZGRja3MyT0hKaFlhb1VienowRVZ6RmR0R1JkS2Y4emY3WjZmcHhET19YMUxIelRvQWxEaw?oc=5',
+            name: 'Tata Power, Suzlon Energy, NHPC, Infosys Stocks Declared High Dividend, Bonus & ...',
+            id: '522958bdf3123d4c18a0419060f24e89',
           },
         ],
       },
-      { name: 'Standalone Article', type: 'standalone_article' },
+      { name: 'Standalone Article', type: 'standalone_article', children: [] },
+      {
+        name: 'Life in Dark! Villagers Suffer 15 Days Without Power; Tata Power Under Fire - Ka...',
+        type: 'article',
+      },
+      {
+        name: 'TATA POWER CO LTD Share Price Today - Live TATAPOWER Stock Price for NSE/BSE - U...',
+        type: 'article',
+      },
+      {
+        name: 'Adani Power Share Latest News🔴 L Tata Power Share Latest News L Adani Power Shar...',
+        type: 'article',
+      },
+      {
+        name: 'TATAPOWER Outlook for the Week (June 08, 2026 – June 12, 2026) - Equitypandit',
+        type: 'article',
+      },
+      {
+        name: 'UK low-emission project facing delay over power access issues: Tata Steel - Busi...',
+        type: 'article',
+      },
+      {
+        name: 'Dividends, bonuses and stock splits in June 2026: Reliance Industries, HDFC Bank...',
+        type: 'article',
+      },
+      {
+        name: 'Tata Power’s TPCODL employee apprehended by Odisha Vigilance while taking Rs 15,...',
+        type: 'article',
+      },
     ],
   };
   data: any;

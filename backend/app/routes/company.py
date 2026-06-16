@@ -1,15 +1,13 @@
 from fastapi import APIRouter, Request, WebSocket
 from fastapi.responses import JSONResponse
 from services.database.stocks_db import fetch_stocks_from_supabase
-from services.websocket.socket_manager import manager
-import json
-from services.stocks.stock_details import add_stock_watcher, remove_stock_watcher, start_polling
 from fastapi import WebSocketDisconnect
+from services.stocks.nse_fetcher import fetch_stock_data
 
 router = APIRouter()
 
 @router.get("/stocks")
-async def get_stocks(exchange: str, req: Request, offset: int = 0, limit: int = 100):
+async def get_stocks(exchange: str, req: Request, offset: int = 150, limit: int = 250):
     if req.method != "GET":
         return JSONResponse(status_code=405, content={"error": "Method not allowed. Use GET."})
     
@@ -24,44 +22,31 @@ async def get_stocks(exchange: str, req: Request, offset: int = 0, limit: int = 
     
     return JSONResponse(content={"stocks": fetched_result}, status_code=200)
 
-@router.websocket("/ws/stocks")
-async def websocket_endpoint(websocket: WebSocket):
-    print("websocket endpoint hit")
-    print(websocket)
-    await manager.connect(websocket)
-    subscribed_symbol = None
+@router.get("/stock/data/history")
+async def get_stock_history(symbol: str, interval: str, period: str, request: Request):
+    if request.method != "GET":
+        return JSONResponse(status_code=405, content={"error": "Method not allowed. Use GET."})
+    
+    if not symbol:
+        return JSONResponse(status_code=400, content={"error": "Symbol is required."})
+    
     try:
-        while True:
-            data = await websocket.receive_text()
-            payload = json.loads(data)
-            
-            action = payload.get("action")
-            symbol = payload.get("symbol")
-            
-            if action == "subscribe":
+        stock_data = fetch_stock_data(symbol, interval, period)
+        return JSONResponse(content=stock_data, status_code=200)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
-                if subscribed_symbol:
-                    manager.unsubscribe(subscribed_symbol, websocket)
-                    remove_stock_watcher(subscribed_symbol)
+@router.get("/stock/data/details")
+async def get_stock_history(symbol: str, request: Request):
+    if request.method != "GET":
+        return JSONResponse(status_code=405, content={"error": "Method not allowed. Use GET."})
+    
+    if not symbol:
+        return JSONResponse(status_code=400, content={"error": "Symbol is required."})
+    
+    try:
+        stock_data = fetch_stock_data(symbol, details=True)
+        return JSONResponse(content=stock_data, status_code=200)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
-                subscribed_symbol = symbol
-
-                manager.subscribe(symbol, websocket)
-
-                count = add_stock_watcher(symbol)
-
-                if count >= 1:
-                    await start_polling(symbol)
-
-            elif action == "unsubscribe":
-
-                manager.unsubscribe(symbol, websocket)
-                remove_stock_watcher(symbol)
-
-                subscribed_symbol = None
-
-    except WebSocketDisconnect:
-
-        if subscribed_symbol:
-            manager.unsubscribe(subscribed_symbol, websocket)
-            remove_stock_watcher(subscribed_symbol)

@@ -57,3 +57,18 @@ option{
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
+.glass-bg{
+  background: linear-gradient(45deg, rgba(41, 41, 41, 0.256) 35%, rgb(164 164 164 / 12%) 50%, rgba(41, 41, 41, 0.256) 75%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.027);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(5px);
+}
+.glass-bg-no-white{
+  background: rgba(41, 41, 41, 0.256);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.027);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(5px);
+}

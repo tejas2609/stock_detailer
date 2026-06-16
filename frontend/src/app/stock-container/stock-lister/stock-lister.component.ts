@@ -18,37 +18,12 @@ export class StockListerComponent implements OnInit{
   constructor(private sharedService: StockSharedService) { }
 
   ngOnInit(): void {
-    // const socket = new WebSocket("ws://localhost:8000/ws/stocks");
-
-    // socket.onopen = () => {
-    //   socket.send(
-    //     JSON.stringify({
-    //       action: "subscribe",
-    //       symbol: "TATA POWER"
-    //     })
-    //   );
-    // };
-
-    // socket.onmessage = (event) => {
-    //   const data = JSON.parse(event.data);
-    //   console.log(data);
-    // };
-
-
-    // this.isStockSelected = this.sharedService.getSelectedStock() ? true : false;
-    // if (!this.isStockSelected) {
-    //   this.sharedService.getAllStocks();
-    // }
-    // this.sharedService.stocksEmitter.subscribe((stocks) => {
-    //   console.log('Received stocks:', this.stocks);
-    //   this.stocks = stocks;
-    // });
+    this.sharedService.stocksEmitter.subscribe((stocks) => {
+      this.stocks = stocks;
+    });
   }
 
-  onScroll(event: any){
-    const element = event.target as HTMLElement;
-    // Check if the user reached the bottom of the container
-    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-
+  selectStock(event: any) {
+    this.sharedService.setSelectedStock(event.target.value);
   }
 }

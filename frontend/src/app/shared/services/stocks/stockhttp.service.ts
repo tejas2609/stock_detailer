@@ -19,6 +19,18 @@ export class StockHttpService {
         );
     }
 
+    getStockDetails(stock: string){
+        return this.http.get(`${this.backendURL}/stock/data/details`, {params: {symbol: stock}}).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    getStockValues(stock: string, interval: string, period: string){
+        return this.http.get(`${this.backendURL}/stock/data/history`, {params: {symbol: stock, interval: interval, period: period}}).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     private handleError(error: HttpErrorResponse) {
         let errorMsg = 'Unknown error!';
         if (error.error instanceof ErrorEvent) {

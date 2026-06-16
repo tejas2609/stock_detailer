@@ -1,0 +1,24 @@
+.details-container{
+    display: flex;
+    width: 100%;
+    padding: 2% 5%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    // background: rgba(41, 41, 41, 0.256);
+    
+    border-radius: 8px;
+    .detail{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        font-size: 0.8rem;
+        color: rgb(180, 180, 180);
+        .heading{
+            font-family: 'title-text';
+        }
+        .content{
+            font-family: 'normal-text';
+        }
+    }
+}

@@ -7,6 +7,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { NgxEchartsDirective, NgxEchartsModule } from 'ngx-echarts';
+
 
 
 @NgModule({
@@ -20,6 +22,10 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatFormFieldModule,
         MatIconModule,
         MatTooltipModule,
+        NgxEchartsDirective,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        })
     ],
     exports: [
         CommonModule,
@@ -31,6 +37,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatFormFieldModule,
         MatIconModule,
         MatTooltipModule,
+        NgxEchartsModule,
+        NgxEchartsDirective
     ]
 })
 

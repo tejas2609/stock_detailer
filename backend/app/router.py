@@ -1,9 +1,8 @@
 from fastapi import APIRouter
-from routes import company, news, kite_connect, auth
+from routes import company, news, auth
 
 router = APIRouter()
 
 router.include_router(company.router)
 router.include_router(news.router)
-router.include_router(kite_connect.router)
 router.include_router(auth.router)

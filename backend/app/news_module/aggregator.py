@@ -12,7 +12,7 @@ def generate_article_id(title: str, source: str) -> str:
     unique = f"{title}-{source}"
     return hashlib.md5(unique.encode()).hexdigest()
 
-def getNews(company: str = "Reliance Industries") -> dict:
+def getNews(company: str = "Tata Power") -> dict:
     # URL encode only the company name to preserve the literal ':' character for the filter
     encoded_company = quote_plus(company)
     url = f"https://news.google.com/rss/search?q={encoded_company}+when:3d&hl=en-IN&gl=IN&ceid=IN:en"

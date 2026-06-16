@@ -1,0 +1,12 @@
+<div class="details-container glass-bg">
+    @if(loading()){
+        <div class="detail">
+            <div class="content">Hold tight.. Your details are being fetched.</div>
+        </div>   
+    } @else {
+        <div class="detail" *ngFor="let d of details()">
+            <div class="heading">{{d.key}}:</div>
+            <div class="content">{{d.value}}</div>
+        </div>
+    }
+</div>

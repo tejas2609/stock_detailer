@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import router as router
-from routes import kite_connect
 from services.clients import redis_client
+from news_module.aggregator import getNews
 
 
 app = FastAPI()
@@ -19,7 +19,8 @@ app.include_router(router.router)
 
 @app.on_event("startup")
 async def startup_event():
-    kite_connect.create_kws(redis_client.get("kite_access_token"))
+    getNews()
+#     kite_connect.create_kws(redis_client.get("kite_access_token"))
 
 @app.get("/")
 async def root():

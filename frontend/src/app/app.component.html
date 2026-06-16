@@ -1,6 +1,7 @@
-<nav>
+<nav [ngStyle]="isStockSelected ? {'position' : 'relative'} : {'position': 'fixed'}">
     <app-navbar></app-navbar>
 </nav>
 <div class="body-container">
-    <app-stock-container></app-stock-container>
+    <!-- <app-stock-container></app-stock-container> -->
+     <app-graph-container></app-graph-container>
 </div>

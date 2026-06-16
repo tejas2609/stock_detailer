@@ -51,7 +51,7 @@ def create_supabase_table(exchange: str):
             conn.close()
 
 
-def fetch_and_insert_instruments(exchange, offset=0, limit=100):
+def fetch_and_insert_instruments(exchange, offset=150, limit=250):
     print('called')
     instruments = get_kite_instruments()
     

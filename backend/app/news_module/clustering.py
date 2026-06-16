@@ -7,6 +7,7 @@ from news_module.graph_builder import filter_relevant_articles
 load_dotenv()
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+news_filter_client = Groq(api_key=os.getenv("GROQ_NEWS_UNIQUE_MODEL_API_KEY"))
 
 def cluster_articles_with_groq(articles, company_name):
     # 1. Filter out completely irrelevant news locally first
@@ -84,8 +85,7 @@ def cluster_articles_with_groq(articles, company_name):
         - Every theme node must have: name, type, children (non-empty array).
         - An article cannot appear more than once in the output.
         - Infer the company name from the articles themselves.
-
-
+        
     Return ONLY a raw minified JSON object. Do not write markdown wraps (like ```json). No conversational explanations.
     """
     
@@ -119,7 +119,79 @@ def cluster_articles_with_groq(articles, company_name):
                             sub_child["url"] = url_cache[sub_child["id"]]
                             
         print("Successfully re-mapped cached URLs onto structured tree output.")
+        
+        tree_data = filter_unique_news(tree_data)
         return tree_data
     except Exception as e:
         print(f"Error parsing structural output payload: {e}")
         return {"name": company_name, "type": "root", "children": []}
+
+
+def reduce_data_for_filter(tree_data, reduced_data=[]):
+    try:
+        for child in tree_data:
+            obj = {}
+            obj['name'] = child['name']
+            obj['type'] = child['type']
+            children = []
+            for article in child.get('children', []):
+                temp = {'name': article['name'], 'id': article['id']}
+                children.append(temp)
+            obj['children'] = children
+            reduced_data.append(obj)
+        
+        return reduced_data    
+    except Exception as e:
+        print('Error', e)
+    
+        
+def filter_unique_news(tree_data):
+    company_name = tree_data['name']
+    tree_data = reduce_data_for_filter(tree_data['children'])
+    sttuctured_data = {}
+    sttuctured_data['name'] = company_name
+    sttuctured_data['type'] = 'root'
+    sttuctured_data['children'] = tree_data
+
+    model_data = json.dumps(sttuctured_data)
+    
+    prompt = f"""
+        - You must return ONLY valid JSON.
+
+        Input JSON:
+        {model_data}
+    
+        - You have to act like an intelligent analyzer here.
+        
+        - You are given a tree like structure where in leaf nodes (which has type="article") there are news articles in each cluster ( cluster has type='theme'). 'name' key of those represent what the news is about.
+        
+        - In each cluster you have to analyze all the news i.e the name fields and compare them with each other. While comparing if two or more news infer the same incident/knowledge/action/state, take ONLY ONE news out of that pool and discard the rest. At the end, the cluster should consist only unique news articles.
+
+        - While comparing do not compare news of different clusters, compare news articles of same clusters only. Do not mix of interchange the news articles cluster.
+        
+        - At the end return the news in the same format as given without disturing their clusters and dont keep and children field in node type=article.
+        
+        Return the result as valid JSON.
+        Do not return markdown.
+        Do not return explanations.
+        
+    """
+    
+    response = news_filter_client.chat.completions.create(
+        model="groq/compound-mini",
+        temperature=0.1, 
+        response_format={"type": "json_object"},
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+    
+    try:
+        tree_data = json.loads(response.choices[0].message.content)
+        return tree_data
+    except Exception as e:
+        print(f"Error parsing structural output payload: {e}")
+        return {}

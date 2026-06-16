@@ -6,6 +6,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SharedModule } from './shared/shared.module';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideEchartsCore } from 'ngx-echarts';
+import * as echarts from 'echarts';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +18,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(SharedModule),
     provideAnimations(),
     provideHttpClient(withFetch()),
+    provideEchartsCore({ echarts })
   ],
 };

@@ -1,0 +1,23 @@
+.stock-graph-container{
+  width: 100%;
+  padding: 1%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin-top: 1%;
+  .options{
+    padding: 1%;
+    box-sizing: border-box;
+    display: flex;
+    gap: 2%;
+    .option{
+      width: 100%;
+    }
+    select{
+      width: 100%;
+    }
+  }
+}
+.chart {
+  height: 350px;
+  width: 100%;
+}
