@@ -6,6 +6,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { NgxEchartsDirective, NgxEchartsModule } from 'ngx-echarts';
 
@@ -25,7 +26,8 @@ import { NgxEchartsDirective, NgxEchartsModule } from 'ngx-echarts';
         NgxEchartsDirective,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
-        })
+        }),
+        MatProgressSpinnerModule
     ],
     exports: [
         CommonModule,
@@ -38,7 +40,8 @@ import { NgxEchartsDirective, NgxEchartsModule } from 'ngx-echarts';
         MatIconModule,
         MatTooltipModule,
         NgxEchartsModule,
-        NgxEchartsDirective
+        NgxEchartsDirective,
+        MatProgressSpinnerModule
     ]
 })
 

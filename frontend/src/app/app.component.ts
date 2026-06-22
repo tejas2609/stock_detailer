@@ -19,14 +19,19 @@ import { GraphContainerComponent } from "./graph-container/graph-container.compo
 export class AppComponent implements OnInit {
 
   isStockSelected : boolean = true
+  changeView: boolean = false
 
   constructor(private sharedService: StockSharedService) { }
 
   ngOnInit(): void {
-    // this.sharedService.getAllStocks();
-    // this.sharedService.selectedStockEmitter.subscribe((res) => {
-    //   this.isStockSelected = true
-    // })
+    this.sharedService.getAllStocks();
+    this.sharedService.selectedStockEmitter.subscribe((res) => {
+      this.isStockSelected = true
+    })
+  }
+
+  changeViewStatus(status: any){
+    this.sharedService.setStockGraphView()
   }
 
 }

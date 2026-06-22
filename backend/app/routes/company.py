@@ -23,7 +23,7 @@ async def get_stocks(exchange: str, req: Request, offset: int = 150, limit: int 
     return JSONResponse(content={"stocks": fetched_result}, status_code=200)
 
 @router.get("/stock/data/history")
-async def get_stock_history(symbol: str, interval: str, period: str, request: Request):
+async def get_stock_history(symbol: str, period: str, interval: str, request: Request):
     if request.method != "GET":
         return JSONResponse(status_code=405, content={"error": "Method not allowed. Use GET."})
     

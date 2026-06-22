@@ -127,8 +127,8 @@ export class GraphContainerComponent implements OnInit, AfterViewInit {
 
     const treeData = this.resp;
 
-    const width = 2000;
-    const height = 900;
+    const width = this.treeContainer.nativeElement['clientWidth'];
+    const height = this.treeContainer.nativeElement['clientHeight'];
 
     const svg = d3
       .select(this.treeContainer.nativeElement)
@@ -152,7 +152,7 @@ export class GraphContainerComponent implements OnInit, AfterViewInit {
       .style('padding', '12px 16px')
       .style('border-radius', '12px')
       .style('font-size', '13px')
-      .style('max-width', '320px')
+      .style('max-width', '500px')
       .style('pointer-events', 'none')
       .style('opacity', 0)
       .style('box-shadow', '0 8px 24px rgba(0,0,0,0.35)');

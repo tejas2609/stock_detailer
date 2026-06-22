@@ -4,9 +4,10 @@
 </div>
 <div class="flex-container">
     <div class="stock-graph">
-        <app-stock-graph></app-stock-graph>
+        <app-stock-graph *ngIf="!changeView"></app-stock-graph>
+        <app-graph-container *ngIf="changeView"></app-graph-container>
     </div>
-    <div class="dummy" style="width: 20%; background: lightgrey;">
-
+    <div class="dummy" style="width: 20%">
+        <app-pie-chart></app-pie-chart>
     </div>
 </div>

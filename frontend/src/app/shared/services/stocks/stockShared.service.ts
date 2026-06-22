@@ -15,9 +15,17 @@ export class StockSharedService {
     selectedStockDetailsEmitter = new Subject<any>();
     selectedStockData: any = [];
     selectedStockDataEmitter = new Subject<any>();
+    selectedStockFinancials: any = {}
+    selectedStockFinancialsEmitter = new Subject<any>();
+    isStockViewGraph: boolean = false
+    stockViewGraphEmitter = new Subject<boolean>();
 
     constructor(private stockHttpService: StockHttpService) { }
 
+    setStockGraphView(){
+        this.isStockViewGraph = !this.isStockViewGraph;
+        this.stockViewGraphEmitter.next(this.isStockViewGraph);
+    }
     setSelectedStock(stock: string) {
         this.selectedStock = stock;
         this.selectedStockEmitter.next(stock);
@@ -25,13 +33,23 @@ export class StockSharedService {
             this.selectedStockDetails = 'data' in resp ? resp['data'] : {}
             this.selectedStockDetailsEmitter.next(this.selectedStockDetails)
         })
-        this.stockHttpService.getStockValues(stock + '.NS', '1m', '3d').subscribe((resp) => {
-            this.selectedStockData = 'data' in resp ? resp['data'] : {}
-            this.selectedStockDataEmitter.next(this.selectedStockData)
+        this.getStockHistroicalValue({period: '1mo', interval: '5d'});
+    }
+    getStockHistroicalValue(obj: any){
+        this.stockHttpService.getStockValues(this.selectedStock + '.NS', obj.period, obj.interval).subscribe((resp) => {
+            let data: any = 'data' in resp ? resp['data'] : {};
+            this.selectedStockData = data['data'];
+            this.selectedStockFinancials = data['financials'];
+            this.selectedStockDataEmitter.next(this.selectedStockData);
+            this.selectedStockFinancialsEmitter.next(this.selectedStockFinancials);
         })
     }
     getSelectedStock(): string {
         return this.selectedStock;
+    }
+
+    getStoredStocks(){
+        return this.stocks;
     }
 
     getAllStocks() {

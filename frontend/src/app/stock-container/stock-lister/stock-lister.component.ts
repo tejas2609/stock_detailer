@@ -18,6 +18,7 @@ export class StockListerComponent implements OnInit{
   constructor(private sharedService: StockSharedService) { }
 
   ngOnInit(): void {
+    this.stocks = this.sharedService.getStoredStocks()
     this.sharedService.stocksEmitter.subscribe((stocks) => {
       this.stocks = stocks;
     });

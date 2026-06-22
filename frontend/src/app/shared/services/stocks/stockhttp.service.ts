@@ -25,7 +25,7 @@ export class StockHttpService {
         );
     }
 
-    getStockValues(stock: string, interval: string, period: string){
+    getStockValues(stock: string, period: string, interval: string){
         return this.http.get(`${this.backendURL}/stock/data/history`, {params: {symbol: stock, interval: interval, period: period}}).pipe(
             catchError(this.handleError)
         );

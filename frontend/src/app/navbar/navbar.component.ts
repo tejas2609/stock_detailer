@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
 @Component({
@@ -9,5 +9,10 @@ import { SharedModule } from '../shared/shared.module';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-  
+  @Output()
+  viewChange = new EventEmitter<boolean>();
+
+  emitEvent(){
+    this.viewChange.emit(true);
+  }
 }

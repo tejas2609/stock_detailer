@@ -3,6 +3,7 @@ import { StockListerComponent } from './stock-lister/stock-lister.component';
 import { SharedModule } from '../shared/shared.module';
 import { StockSharedService } from '../shared/services/stocks/stockShared.service';
 import { StockChartContainerComponent } from './stock-chart-container/stock-chart-container.component';
+import { GraphContainerComponent } from "../graph-container/graph-container.component";
 
 @Component({
   selector: 'app-stock-container',
@@ -13,14 +14,15 @@ import { StockChartContainerComponent } from './stock-chart-container/stock-char
 })
 export class StockContainerComponent implements OnInit {
   
-  isStockSelected: boolean = true;
+  isStockSelected: boolean = false;
 
   constructor(private sharedService: StockSharedService) {}
   
   ngOnInit(): void {
-    // this.isStockSelected = this.sharedService.getSelectedStock() ? true : false;
-    // this.sharedService.selectedStockEmitter.subscribe((stock) => {
-    //   this.isStockSelected = stock ? true : false;
-    // });
+    this.isStockSelected = this.sharedService.getSelectedStock() ? true : false;
+    this.sharedService.selectedStockEmitter.subscribe((stock) => {
+      this.isStockSelected = stock ? true : false;
+    });
   }
+
 }

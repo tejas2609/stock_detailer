@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { SharedModule } from '../../../shared/shared.module';
+import { StockSharedService } from '../../../shared/services/stocks/stockShared.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-stock-graph',
@@ -11,12 +13,72 @@ import { SharedModule } from '../../../shared/shared.module';
 })
 export class StockGraphComponent implements OnInit {
   chartOption: EChartsOption = {};
+  
+  dataValues = [];
+  timeValues = [];
+  loadingGraph = true;
+
+  graphForm!: FormGroup;
+
+  periods = [
+        {"value": "1d", "placeholder": "1 Day"},
+        {"value": "5d", "placeholder": "5 Days"},
+        {"value": "1mo", "placeholder": "1 Month"},
+        {"value": "3mo", "placeholder": "3 Months"},
+        {"value": "6mo", "placeholder": "6 Months"},
+        {"value": "1y", "placeholder": "1 Year"},
+        {"value": "2y", "placeholder": "2 Years"},
+        {"value": "5y", "placeholder": "5 Years"},
+        {"value": "10y", "placeholder": "10 Years"},
+        {"value": "ytd", "placeholder": "Year to Date"},
+        {"value": "max", "placeholder": "Entire available history"}
+    ]
+  intervals = [
+        {"value": "1m", "placeholder": "1 Minute"},
+        {"value": "2m", "placeholder": "2 Minutes"},
+        {"value": "5m", "placeholder": "5 Minutes"},
+        {"value": "15m", "placeholder": "15 Minutes"},
+        {"value": "30m", "placeholder": "30 Minutes"},
+        {"value": "60m", "placeholder": "60 Minutes"},
+        {"value": "90m", "placeholder": "90 Minutes"},
+        {"value": "1h", "placeholder": "1 Hour"},
+        {"value": "1d", "placeholder": "1 Day"},
+        {"value": "5d", "placeholder": "5 Days"},
+        {"value": "1wk", "placeholder": "1 Week"},
+        {"value": "1mo", "placeholder": "1 Month"},
+        {"value": "3mo", "placeholder": "3 Months"}
+    ]
+
+  constructor(private sharedService: StockSharedService){}
 
   ngOnInit(): void {
+    this.graphForm = new FormGroup({
+      period: new FormControl('1mo'),
+      interval: new FormControl('1d'),
+    })
+    this.sharedService.selectedStockDataEmitter.subscribe(
+      (resp) => {
+        this.dataValues = resp.map((obj: any) => obj['Close'])
+        this.timeValues = resp.map((obj: any) => 'Datetime' in obj ? obj['Datetime'].split('+')[0] : obj['Date'])
+        this.setGraphSeries();
+        this.loadingGraph = false;
+      } 
+    )
     this.setGraphSeries();
   }
   setGraphSeries() {
     this.chartOption = {
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)', // White background
+        borderColor: '#e2e8f0',                       // Light gray border
+        borderWidth: 1,
+        textStyle: {
+          color: '#1e293b'                             // Dark text color
+        },
+        // Optional: Smoothly transition the tooltip box as the mouse moves
+        transitionDuration: 0.3, 
+      },
       grid: {
         left: 0,
         right: 0,
@@ -27,7 +89,7 @@ export class StockGraphComponent implements OnInit {
 
       xAxis: {
         type: 'category',
-        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        data: this.timeValues,
         boundaryGap: false,
         axisLine: {
           show: true,
@@ -60,9 +122,8 @@ export class StockGraphComponent implements OnInit {
       series: [
         {
           type: 'line',
-          smooth: true,
           symbol: 'none',
-          data: [2420, 2510, 2470, 2680, 2810, 2960],
+          data: this.dataValues,
 
           lineStyle: {
             width: 2,
@@ -91,5 +152,10 @@ export class StockGraphComponent implements OnInit {
         },
       ],
     };
+  }
+
+  reloadGraph(){
+    let formValues = this.graphForm.value;
+    this.sharedService.getStockHistroicalValue(formValues);
   }
 }

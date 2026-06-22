@@ -40,6 +40,8 @@ def cluster_articles_with_groq(articles, company_name):
     print(f"Token Guard: Clean string payload size sent to Groq: {len(json.dumps(token_proof_payload))} characters.")
 
     # 3. Compact prompt optimized for minimized context overhead
+    token_proof_payload = filter_unique_news(token_proof_payload)
+    
     prompt = f"""
     You are a data engineer structuring news for a D3.js Hierarchical Tree Chart.
     Target Stock: {company_name}
@@ -48,45 +50,22 @@ def cluster_articles_with_groq(articles, company_name):
     {json.dumps(token_proof_payload, separators=(',', ':'))}
     
     Task:
-        You are a precise data analyst. Your task is to deduplicate and cluster a list of articles into a structured JSON tree.
+        You are a precise data analyst. Your task is to cluster a list of articles into a structured JSON tree.
 
-        ## INPUT
-        These are the array of artcles {token_proof_payload}. Each article has: id, title, source.
+        You are a news clustering engine.
 
-        ## STEP 1 — DEDUPLICATE
-        Filter out similar articles:
-        - From articles having titles which convery the same thing take only one which is most descriptive.
-        - Note: Title may be lexically different, so take the best representative which describes well and discard the rest.
-        - While analyzing any new article, compare it with all previously accepted unique articles and decide if it is a duplicate or not. If it is a duplicate, discard it. If not, keep it for theme clustering.
-        - The goal is to end up with only unique news stories, not multiple articles about the same news event. Ensure a clean thematic clustering in the next step.
+        Given a list of already deduplicated articles {token_proof_payload}, group them into 2-6 broad themes based on their primary subject matter.
 
+        Rules:
+        - Each article must belong to exactly one theme.
+        - Articles within a theme should share a common topic, event category, or business context.
+        - Theme names should be short, clear, and descriptive (2-4 words, Title Case).
+        - Do not create duplicate themes with similar meanings.
+        - If an article does not fit any group, place it as a standalone article under the root.
 
-        ## STEP 2 — CLUSTER INTO THEMES
-        Group the remaining unique articles (dont consider discarded once) into broad thematic clusters.
-        - Identify 2–6 themes based on what the articles are actually about.
-        - Each article must belong to exactly ONE theme.
-        - If an article does not fit any theme, mark it as standalone.
-        - Theme names must be short (2–4 words), clear, and capitalized (e.g., "Market Performance", "Renewable Projects", "Company Strategy", etc - guess the theme from similar articles).
+        Return a JSON tree using the required schema.
 
-        ## STEP 3 — BUILD THE JSON TREE
-        Construct a D3 Tree JSON matching this strict schema:
-
-       - Root Node: {{"name": "{company_name}", "type": "root", "children": []}}
-
-       - Theme Node: {{"name": "Short Theme Title", "type": "theme", "children": []}}
-
-       - Leaf Node: {{"name": "Article Title", "id": "id", "source": "source", "type": "article"}}
-
-       - Standalone Node: Directly under root if an article doesn't match any cluster, "type": "standalone_article"
-
-        ## STRICT RULES
-        - Output ONLY the raw JSON. No explanation, no markdown fences, no preamble.
-        - Every article node must have: name, id, source, type.
-        - Every theme node must have: name, type, children (non-empty array).
-        - An article cannot appear more than once in the output.
-        - Infer the company name from the articles themselves.
-        
-    Return ONLY a raw minified JSON object. Do not write markdown wraps (like ```json). No conversational explanations.
+        Output only valid JSON.
     """
     
     print("Dispatching minimized token-proof payload to Groq...")
@@ -145,35 +124,31 @@ def reduce_data_for_filter(tree_data, reduced_data=[]):
         print('Error', e)
     
         
-def filter_unique_news(tree_data):
-    company_name = tree_data['name']
-    tree_data = reduce_data_for_filter(tree_data['children'])
-    sttuctured_data = {}
-    sttuctured_data['name'] = company_name
-    sttuctured_data['type'] = 'root'
-    sttuctured_data['children'] = tree_data
-
-    model_data = json.dumps(sttuctured_data)
+def filter_unique_news(news):
     
     prompt = f"""
-        - You must return ONLY valid JSON.
+        You are a semantic deduplication engine.
 
-        Input JSON:
-        {model_data}
-    
-        - You have to act like an intelligent analyzer here.
-        
-        - You are given a tree like structure where in leaf nodes (which has type="article") there are news articles in each cluster ( cluster has type='theme'). 'name' key of those represent what the news is about.
-        
-        - In each cluster you have to analyze all the news i.e the name fields and compare them with each other. While comparing if two or more news infer the same incident/knowledge/action/state, take ONLY ONE news out of that pool and discard the rest. At the end, the cluster should consist only unique news articles.
+        Given a list of articles {news}, keep only unique news stories.
 
-        - While comparing do not compare news of different clusters, compare news articles of same clusters only. Do not mix of interchange the news articles cluster.
-        
-        - At the end return the news in the same format as given without disturing their clusters and dont keep and children field in node type=article.
-        
-        Return the result as valid JSON.
-        Do not return markdown.
-        Do not return explanations.
+        Two articles are duplicates if they convey the same underlying fact, event, announcement, action, outcome, state, or information, even if their wording is completely different.
+
+        Examples:
+        - "I am Ramesh" and "My name is Ramesh" → duplicate
+        - "Apple launches iPhone 18" and "Apple unveils iPhone 18 at keynote" → duplicate
+
+        Compare each article against all previously accepted unique articles.
+
+        When duplicates are found:
+        - Keep only one article.
+        - Keep the most descriptive and informative title.
+        - Discard the rest.
+
+        Return only the deduplicated articles in the same format as input.
+
+        Important:
+        Deduplicate by meaning, not wording.
+        Output only valid JSON.
         
     """
     
