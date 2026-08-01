@@ -13,10 +13,44 @@ import { StockSharedService } from '../../../shared/services/stocks/stockShared.
 export class StockDetailsComponent implements OnInit{
   // @Input('details') details: any;
   details = input<any>();
+  detailsMap = computed(() => {
+    return Object.fromEntries(
+      this.details().map((item: any) => [item.key, item.value])
+    );
+  });
   loading = computed(() => !this.details())
+
+  detailsObj = [
+    {
+      key: 'yearHigh',
+      icon: 'trending_up',
+      placeholder: 'Year High'
+    },
+    {
+      key: 'yearLow',
+      icon: 'trending_down',
+      placeholder: 'Year Low'
+    },
+    {
+      key: 'previousClose',
+      icon: 'history',
+      placeholder: 'Previous Close'
+    },
+    {
+      key: 'dayHigh',
+      icon: 'north',
+      placeholder: 'Day High'
+    },
+    {
+      key: 'dayLow',
+      icon: 'south',
+      placeholder: 'Day Low'
+    }
+  ];
 
   constructor(private stockSharedService: StockSharedService){}
 
   ngOnInit(){
   }
+
 }

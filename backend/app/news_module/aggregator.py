@@ -17,9 +17,7 @@ def getNews(company: str = "Tata Power") -> dict:
     encoded_company = quote_plus(company)
     url = f"https://news.google.com/rss/search?q={encoded_company}+when:3d&hl=en-IN&gl=IN&ceid=IN:en"
     
-    print(f"Targeting RSS Feed: {url}")
 
-    # Explicit user agent header to prevent Google from dropping connection blocks
     browser_headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
@@ -29,7 +27,6 @@ def getNews(company: str = "Tata Power") -> dict:
     articles = []
 
     if not feed.entries:
-        print("Parsed feed returned 0 entries. Trying broader 7-day horizon lookup...")
         url = f"https://news.google.com/rss/search?q={encoded_company}+when:7d&hl=en-IN&gl=IN&ceid=IN:en"
         feed = feedparser.parse(url, request_headers=browser_headers)
 
@@ -49,11 +46,8 @@ def getNews(company: str = "Tata Power") -> dict:
             "source": source,
             "url": art.link if hasattr(art, "link") else "",
             "summary": summary
-        })
-        
-    print(f"Successfully processed {len(articles)} raw feed entries.")
+        })    
     
-    # Process structured nodes via the tight token-capped pipeline
     d3_tree_data = cluster_articles_with_groq(articles, company)
-    print(d3_tree_data)
+
     return d3_tree_data

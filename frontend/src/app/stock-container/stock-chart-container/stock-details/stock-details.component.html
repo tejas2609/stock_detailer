@@ -1,12 +1,25 @@
-<div class="details-container glass-bg">
+<div class="details-container">
     @if(loading()){
-        <div class="detail">
+        <div class="details">
             <div class="content">Hold tight.. Your details are being fetched.</div>
         </div>   
     } @else {
-        <div class="detail" *ngFor="let d of details()">
-            <div class="heading">{{d.key}}:</div>
-            <div class="content">{{d.value}}</div>
+        <div class="details">
+            <div class="detail" *ngFor="let d of detailsObj; let i = index">
+                <div class="icon">
+                    <div><span class="material-icons-outlined">{{d.icon}}</span></div>
+                </div>
+                <div class="content-div">
+                    <div class="heading">{{d.placeholder}}</div>
+                    <div class="value">
+                        {{
+                            detailsMap()[d.key] != null
+                            ? (detailsMap()[d.key] | number:'1.2-2')
+                            : 'NA'
+                        }}
+                    </div>
+                </div>
+            </div>
         </div>
     }
 </div>

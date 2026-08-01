@@ -19,7 +19,7 @@ app.include_router(router.router)
 
 # @app.on_event("startup")
 # async def startup_event():
-    # getNews()
+#     getNews()
 #     kite_connect.create_kws(redis_client.get("kite_access_token"))
 
 @app.get("/")

@@ -1,8 +1,3 @@
-<div class="no-stock-selected-container" *ngIf="!isStockSelected">
-    <div class="background-radial-container full-width">
-        <app-stock-lister class="full-width stock-lister"></app-stock-lister>
-    </div>
-</div>
-<div class="meta-stock-container full-width" *ngIf="isStockSelected">
+<div class="meta-stock-container full-width" style="margin-top: 1%;" *ngIf="isStockSelected">
     <app-stock-chart-container class="stock-detail full-width"></app-stock-chart-container>
 </div>

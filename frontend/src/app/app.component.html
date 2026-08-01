@@ -1,6 +1,24 @@
-<nav [ngStyle]="isStockSelected ? {'position' : 'relative'} : {'position': 'fixed'}">
-    <app-navbar (viewChange)="changeViewStatus($event)"></app-navbar>
-</nav>
-<div class="body-container">
-    <app-stock-container></app-stock-container>
+<div class="parent-container">
+    <nav>
+        <app-navbar (viewChange)="changeViewStatus($event)"></app-navbar>
+    </nav>
+    <div class="body-container">
+        <div class="head-section">
+            <div class="page-headline">
+                <h1>Dashboard</h1>
+            </div>
+            <div *ngIf="showStockLister" class="stock-lister">
+                <app-stock-lister class="full-width"></app-stock-lister>
+            </div>
+            <div *ngIf="!showStockLister" class="stock-lister">
+                <app-accounts class="full-width"></app-accounts>
+            </div>
+            <div class="right-icons">
+                <div class="option">
+                    <mat-icon class="material-symbols-outlined thin-icon">notifications</mat-icon>
+                </div>
+            </div>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
 </div>

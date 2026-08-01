@@ -7,125 +7,123 @@ import {
   OnChanges,
   SimpleChanges,
   AfterViewInit,
+  OnDestroy,
+  AfterViewChecked,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import * as d3 from 'd3';
+import { StockSharedService } from '../shared/services/stocks/stockShared.service';
+import { StockNewsService } from '../shared/services/news/stockNews.service';
+import { SharedModule } from '../shared/shared.module';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-graph-container',
   standalone: true,
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './graph-container.component.html',
   styleUrl: './graph-container.component.scss',
+   animations: [
+    trigger('messageAnimation', [
+      transition('* => *', [
+        style({
+          opacity: 0,
+          transform: 'translateY(18px)'
+        }),
+        animate(
+          '450ms ease-out',
+          style({
+            opacity: 1,
+            transform: 'translateY(0)'
+          })
+        )
+      ])
+    ])
+  ]
 })
-export class GraphContainerComponent implements OnInit, AfterViewInit {
-  resp = {
-    name: 'Tata Power',
-    type: 'root',
-    children: [
-      {
-        name: 'Market Performance',
-        type: 'theme',
-        children: [
-          {
-            name: 'Tata Power Company Q2 Results 2026',
-            id: 'dedcf57b7f1448b4d4234004387b1701',
-          },
-          {
-            name: 'Tata Power down: Despite record high FY26 profit, why shares got downgrade call ...',
-            id: '2ed21e99a361f23866584bd7f18ff10c',
-          },
-          {
-            name: 'Tata Power Company Ltd Technical Momentum Shifts Amid Mixed Indicator Signals - ...',
-            id: '94bf70563c56fe44470b0995b214ad15',
-          },
-          {
-            name: 'Tata Power Sees Surge in Call Option Activity Amid Bullish Momentum - Markets Mo...',
-            id: '31a54289c989578332a4e771be66d259',
-          },
-          {
-            name: 'Tata Power Company Ltd is Rated Sell - Markets Mojo',
-            id: '76f67230fd7e6dd0d68c67b2e331334e',
-          },
-          {
-            name: 'Tata Power Company Ltd Valuation Shifts Amidst Market Rally - Markets Mojo',
-            id: '382f0d64878c8e723fcd9c93ead7aa94',
-          },
-        ],
-      },
-      {
-        name: 'Company Strategy',
-        type: 'theme',
-        children: [
-          {
-            name: 'Tata Power sets July 7 for 107th AGM via video conference - scanx.trade',
-            id: 'e969f425316197e0c8d350b22cdd7a23',
-          },
-          {
-            name: 'UPPCL gets UPERC nod to import electricity from Tata Power-DGPC project in Bhuta...',
-            id: '0fcd908d98c66b7a431a7db6f28c46d9',
-          },
-        ],
-      },
-      {
-        name: 'Renewable Projects',
-        type: 'theme',
-        children: [
-          {
-            name: 'Tata Power, NHPC, Acme Solar, JSW Energy, NTPC, CESC: Target prices as valuation...',
-            id: 'd02d49277dcd3828137943f79eda0fb1',
-          },
-          {
-            name: 'Tata Power, Suzlon Energy, NHPC, Infosys Stocks Declared High Dividend, Bonus & ...',
-            id: '522958bdf3123d4c18a0419060f24e89',
-          },
-        ],
-      },
-      { name: 'Standalone Article', type: 'standalone_article', children: [] },
-      {
-        name: 'Life in Dark! Villagers Suffer 15 Days Without Power; Tata Power Under Fire - Ka...',
-        type: 'article',
-      },
-      {
-        name: 'TATA POWER CO LTD Share Price Today - Live TATAPOWER Stock Price for NSE/BSE - U...',
-        type: 'article',
-      },
-      {
-        name: 'Adani Power Share Latest News🔴 L Tata Power Share Latest News L Adani Power Shar...',
-        type: 'article',
-      },
-      {
-        name: 'TATAPOWER Outlook for the Week (June 08, 2026 – June 12, 2026) - Equitypandit',
-        type: 'article',
-      },
-      {
-        name: 'UK low-emission project facing delay over power access issues: Tata Steel - Busi...',
-        type: 'article',
-      },
-      {
-        name: 'Dividends, bonuses and stock splits in June 2026: Reliance Industries, HDFC Bank...',
-        type: 'article',
-      },
-      {
-        name: 'Tata Power’s TPCODL employee apprehended by Odisha Vigilance while taking Rs 15,...',
-        type: 'article',
-      },
-    ],
-  };
+export class GraphContainerComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked{
+  resp = {};
   data: any;
-  @ViewChild('graphContainer', { static: true })
+
+  @ViewChild('graphContainer')
   treeContainer!: ElementRef;
 
-  ngOnInit() {}
+  selectedStock: string = '';
+  loading: boolean = true;
+
+  private newsSub?: Subscription;
+  private graphDrawn = false;
+
+  messages: string[] = [
+    'Hold tight, getting news for you...',
+    'Fetching the latest market updates...',
+    'Getting the insights notched for you...',
+    'Scanning trusted financial sources...',
+    'Looking for what matters most...',
+    'Analyzing market sentiment...',
+    'Finding key developments...',
+    'Almost there...'
+  ];
+
+  currentIndex = 0;
+
+  private interval!: ReturnType<typeof setInterval>;
+
+  constructor(private stockSharedService: StockSharedService, private stockNewsService: StockNewsService) {}
+
+  ngOnInit() {
+    this.newsSub = this.stockNewsService.stockNewsEmitter.subscribe((news: any) => {
+      this.data = news;
+      this.loading = false;
+      this.graphDrawn = false;
+    });
+
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.messages.length;
+      }, 5000);
+    }
+
+    this.loadStockNews();
+  }
+
+  private loadStockNews() {
+    this.selectedStock = this.stockSharedService.getSelectedStock();
+
+    if (this.selectedStock === '') {
+      this.loading = false;
+      this.data = undefined;
+      return;
+    }
+
+    this.loading = true;
+    this.data = undefined;
+    this.graphDrawn = false;
+    this.stockNewsService.getStockNews(this.selectedStock);
+  }
 
   ngAfterViewInit() {
-    this.renderGraph();
+  }
+
+  ngAfterViewChecked() {
+    if (!this.loading && this.data && this.treeContainer && !this.graphDrawn) {
+      this.graphDrawn = true;
+      this.renderGraph();
+    }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+    if (this.newsSub) {
+      this.newsSub.unsubscribe();
+    }
   }
 
   renderGraph() {
     d3.select(this.treeContainer.nativeElement).selectAll('*').remove();
 
-    const treeData = this.resp;
+    const treeData = this.data;
 
     const width = this.treeContainer.nativeElement['clientWidth'];
     const height = this.treeContainer.nativeElement['clientHeight'];
@@ -279,41 +277,5 @@ export class GraphContainerComponent implements OnInit, AfterViewInit {
     );
   }
 
-  buildTree(data: any) {
-    const nodeMap = new Map();
-
-    data.nodes.forEach((node: any) => {
-      nodeMap.set(node.id, {
-        id: node.id,
-        name: node.title,
-        data: node,
-        children: [],
-      });
-    });
-
-    const childIds = new Set();
-
-    data.links.forEach((link: any) => {
-      const sourceNode = nodeMap.get(link.source);
-      const targetNode = nodeMap.get(link.target);
-
-      if (sourceNode && targetNode && !childIds.has(link.target)) {
-        sourceNode.children.push(targetNode);
-        childIds.add(link.target);
-      }
-    });
-
-    const rootChildren: any = [];
-
-    data.nodes.forEach((node: any) => {
-      if (!childIds.has(node.id)) {
-        rootChildren.push(nodeMap.get(node.id));
-      }
-    });
-
-    return {
-      name: 'Tata Power',
-      children: rootChildren,
-    };
-  }
+  
 }

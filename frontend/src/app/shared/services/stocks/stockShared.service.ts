@@ -52,6 +52,10 @@ export class StockSharedService {
         return this.stocks;
     }
 
+    getSelectedStockHistoricalData(){
+        return {data: this.selectedStockData, financials: this.selectedStockFinancials};
+    }
+
     getAllStocks() {
         this.stockHttpService.getStocks('NSE').subscribe({
             next: (stocks: any) => {

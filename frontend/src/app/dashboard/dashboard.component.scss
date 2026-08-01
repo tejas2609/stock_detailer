@@ -1,0 +1,104 @@
+.dashboard-component{
+    padding:2rem 0;
+    display:flex;
+    gap:4rem;
+    .details{
+        width:70%;
+    }
+    .details-panel{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(20rem, 1fr));
+        gap: 4rem;
+        &:last-child{
+            margin-top: 4rem;
+        }
+        .card{
+            width: 100%;
+            border: 1px solid linear-gradient(90deg, #8bba91, #53745f);
+            background-color: white;
+            padding: 2rem;
+            box-sizing: border-box;
+            border-radius: 2rem;
+            color: black;
+            max-height: 30vh;
+            .card-header{
+                font-size: 1.2rem;
+                font-family: semibold-text-24p;
+            }
+            .card-details{
+                box-sizing: border-box;
+                font-family: normal-text;
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+                .card-detail-headline{
+                    font-family: semibold-text-18p;
+                    margin-top: 1rem;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    font-size: 0.9rem;
+                    span{
+                        font-size: 0.8rem;
+                    }
+                    .chart {
+                        width: 100%;
+                        height: 200px;
+                    }   
+                    .dummychart{
+                        width: 100%;
+                        height: 70px;
+                    }
+                }
+            }
+        }
+        .investment{
+            background: linear-gradient(90deg, #8bba91, #53745f);
+        }
+    }
+    .news-panel{
+        width: 30%;
+        background-color: white;
+        padding: 2rem;
+        box-sizing: border-box;
+        border-radius: 2rem;
+        max-height: 80vh;
+        overflow-y: auto;
+        .news-header{
+            h3{
+                border-bottom: 1px solid rgb(63, 63, 63);
+                text-underline-offset: 0.5rem;
+            }
+        }
+        .news-container{
+            .news-card{
+                padding: 0.5rem;
+                border-bottom: 1px solid rgb(190, 190, 190);
+                .news-content{
+                    .type{
+                        font-size: 0.7rem;
+                        color: red;
+                        font-weight: bold;
+                    }
+                    .news{
+                        font-family: normal-text;
+                        font-size: 0.8rem;
+                        width: 100%;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                    .link{
+                        text-align: right;
+                        font-size: 0.7rem;
+                        color: rgb(90, 90, 172);
+                        font-weight: bold;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,32 +1,84 @@
-.navbar-container{
-    width: 100%;
-    padding: 0 1rem;
-    box-sizing: border-box;
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
 }
-.navbar-content{
-    width: inherit;
+
+.logo-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  flex-shrink: 0;
+  font-family: title-text;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  flex: 1;
+  .option {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    .left-content{
-        font-family: title-text;
-        .logo{
-            letter-spacing: 0.1rem;
-        }
+    background-color: var(--options-bg-color);
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    scale: 1.05;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    position: relative;
+    &:hover {
+      mat-icon {
+        scale: 1.35;
+        transition: scale 0.2s ease-in-out;
+      }
+      cursor: pointer;
+      background-color: var(--sidebar-bg-color);
+      color: white;
+
+      .tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+      }
     }
-    .right-content{
-        .icons{
-            display: flex;
-            gap: 1rem;
-            .icon{
-                mat-icon{
-                    color: rgb(237, 237, 237);
-                }
-                :hover{
-                    cursor: pointer;
-                }
-            }
-        }
+
+    .tooltip {
+      position: absolute;
+      left: 120%;
+      width: max-content;
+      background-color: rgba(0, 0, 0, 0.815);
+      color: white;
+      padding: 5% 15%;
+      border-radius: 0.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-8px);
+      transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, visibility 0.2s ease-in-out;
+      pointer-events: none;
+      z-index: 10;
     }
+  }
+}
+
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1rem;
+  flex-shrink: 0;
+    mat-icon{
+        border: 1px solid black;
+        background-color: var(--options-bg-color);
+        padding: 0.5rem;
+        border-radius: 50px;
+        scale: 1.25;
+    }
+  
 }

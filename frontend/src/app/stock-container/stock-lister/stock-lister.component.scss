@@ -1,26 +1,94 @@
-.stock-selector-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-}
-select{
-    width: 100%;
-}
-select:hover {
-    cursor: pointer;
+.custom-select {
+  position: relative;
+  width: 100%;
 }
 
-option{
-    scrollbar-width: none;
-    ::-webkit-scrollbar {
-        display: none;
-    }
-    :hover,
-    :focus,
-    :checked{
-        cursor: pointer;
-        background: rgb(40, 40, 40) !important;
-    }
+.select-box {
+  min-height: 2.5rem;
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 3rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  background-color: var(--background-color-inputs);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.placeholder {
+  color: var(--text-color);
+  font-size: clamp(0.85rem, 0.8rem + 0.2vw, 1rem);
+}
+
+.placeholder.selected {
+  color: var(--text-color);
+}
+
+.arrow,
+.search-icon {
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.3rem);
+  color: var(--text-color);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  border-radius: 0.75rem;
+  background: var(--background-color-inputs);
+  border: 0.0625rem solid var(--border-color);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.search-container {
+  min-height: 2.5rem;
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.08);
+}
+
+.search-container input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: var(--text-color);
+
+  font-size: clamp(0.85rem, 0.8rem + 0.2vw, 1rem);
+}
+
+.search-container input::placeholder {
+  color: var(--text-color);
+}
+
+.options-viewport {
+  height: 12rem;
+  max-height: 35vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.option {
+  padding-block: 0.9rem;
+  padding-inline: 1rem;
+
+  color: var(--text-color);
+
+  font-size: clamp(0.85rem, 0.8rem + 0.2vw, 1rem);
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.05);
 }

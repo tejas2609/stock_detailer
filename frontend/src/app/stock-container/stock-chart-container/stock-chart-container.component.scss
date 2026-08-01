@@ -1,16 +1,13 @@
 .flex-container{
     display: flex;
-    align-items: center;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     gap: 2%;
-    padding: 0 2%;
     box-sizing: border-box;
-    .details{
-        width: 80%;
-    }
-    .lister{
-        width: 20%;
+    .stock-details, .extras{
+        width: 100%;
     }
 }
 .stock-graph{

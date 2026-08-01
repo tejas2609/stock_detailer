@@ -42,7 +42,6 @@ def create_supabase_table(exchange: str):
             
         cur.close()
         conn.commit()
-        print("Table and indexes created successfully in Supabase!")
         
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error executing SQL: {error}")
@@ -50,9 +49,7 @@ def create_supabase_table(exchange: str):
         if conn is not None:
             conn.close()
 
-
-def fetch_and_insert_instruments(exchange, offset=150, limit=250):
-    print('called')
+def fetch_and_insert_instruments(exchange):
     instruments = get_kite_instruments()
     
     formatted_instruments = []
@@ -62,32 +59,44 @@ def fetch_and_insert_instruments(exchange, offset=150, limit=250):
 
     try:
         response = supabase.table(f"{exchange.lower()}_stocks").insert(formatted_instruments).execute()
-        print(f"Inserted {len(formatted_instruments)} records into Supabase for {exchange}")
-        return fetch_stocks_from_supabase(exchange, offset, limit)
+
+        return fetch_stocks_from_supabase(exchange)
     except Exception as e:
         print(f"Error inserting into Supabase: {e}")
-  
-def fetch_stocks_from_supabase(exchange: str, offset, limit):
+
+def fetch_stocks_from_supabase(exchange: str):
     table_name = f"{exchange.lower()}_stocks"
-    query = f"""SELECT 1 FROM information_schema.tables 
-    WHERE table_schema = 'public' AND table_name = '{table_name}'
-    """
+
     try:
         while True:
             resp = (
                 supabase.table(table_name)
                 .select("*")
-                .range(offset, offset + limit - 1)
                 .execute()
             )
             batch = resp.data
             if not batch:
-                return fetch_and_insert_instruments(exchange, offset, limit)
+                return fetch_and_insert_instruments(exchange)
             return {"stocks": batch}
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error checking table existence: {error}")
-        return fetch_and_insert_instruments(exchange, offset, limit)
+        return fetch_and_insert_instruments(exchange)
 
     
-
-
+def get_company_name_by_symbol(exchange: str, symbol: str):
+    table_name = f"{exchange.lower()}_stocks"
+    try:
+        response = (
+            supabase.table(table_name)
+            .select("company_name")
+            .eq("symbol", symbol)
+            .single()
+            .execute()
+        )
+        if response.data:
+            return response.data.get("company_name")
+        else:
+            return None
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error fetching company name: {error}")
+        return None

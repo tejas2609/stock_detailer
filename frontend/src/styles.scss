@@ -14,6 +14,10 @@ body {
   background-color: var(--background-color);
   scrollbar-width: none;
   -ms-scrollbar-width: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
@@ -21,12 +25,19 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 :root {
-  --background-color: #0a0908;
-  --background-color-inputs: #ffffff10;
-  --text-color: #eae0d5;
+  --background-color: #f1f1f1;
+  --sidebar-bg-color: #729877;
+  --card-surface-color: #eae4e1;
+  --highlight-color: #53745f;
+  --border-color: #dddddd;
+  --background-color-inputs: #eae4e1;
+  --text-color: black;
   --color3: #22333b;
   --color4: #c6ac8f;
   --color5: #5e503f;
+  --color6: #BFDDDA;
+  --color7: #F8FAFC;
+  --options-bg-color: #ededed;
 }
 
 .full-width{
@@ -34,7 +45,6 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 select{
-  background-color: var(--background-color-inputs);
   color: var(--text-color);
   padding: 0.5rem 1rem;
   border: none;
@@ -71,4 +81,12 @@ option{
   border: 1px solid rgba(255, 255, 255, 0.027);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(5px);
+}
+
+.thin-icon {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 50,
+    'GRAD' -25,
+    'opsz' 24;
 }

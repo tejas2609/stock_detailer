@@ -14,15 +14,15 @@ import { GraphContainerComponent } from "../graph-container/graph-container.comp
 })
 export class StockContainerComponent implements OnInit {
   
-  isStockSelected: boolean = false;
+  isStockSelected: boolean = true;
 
   constructor(private sharedService: StockSharedService) {}
   
   ngOnInit(): void {
-    this.isStockSelected = this.sharedService.getSelectedStock() ? true : false;
-    this.sharedService.selectedStockEmitter.subscribe((stock) => {
-      this.isStockSelected = stock ? true : false;
-    });
+    // this.isStockSelected = this.sharedService.getSelectedStock() ? true : false;
+    // this.sharedService.selectedStockEmitter.subscribe((stock) => {
+    //   this.isStockSelected = stock ? true : false;
+    // });
   }
 
 }

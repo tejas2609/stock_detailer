@@ -10,24 +10,18 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 news_filter_client = Groq(api_key=os.getenv("GROQ_NEWS_UNIQUE_MODEL_API_KEY"))
 
 def cluster_articles_with_groq(articles, company_name):
-    # 1. Filter out completely irrelevant news locally first
     relevant_articles = filter_relevant_articles(articles, company_name)
-    print(f"Relevant articles after keyword filtering: {len(relevant_articles)}")
     
     if not relevant_articles:
         return {"name": company_name, "type": "root", "children": []}
-        
-    # 2. ULTRA TOKEN OPTIMIZATION & URL CACHING GUARD:
-    # We strip URLs completely and truncate titles to 80 chars. 
-    # This reduces each article's payload to ~30-40 characters total!
+
     token_proof_payload = []
-    url_cache = {}  # Local storage to preserve URLs away from Groq
+    url_cache = {} 
     
-    for art in relevant_articles[:20]:  # Limit to top 20 highly relevant articles
+    for art in relevant_articles[:20]: 
         art_id = art["id"]
-        url_cache[art_id] = art.get("url", "")  # Cache URL safely in local memory
+        url_cache[art_id] = art.get("url", "") 
         
-        # Keep only the essential text identifiers, truncating titles cleanly
         truncated_title = art["title"][:80] + "..." if len(art["title"]) > 80 else art["title"]
         
         token_proof_payload.append({
@@ -36,11 +30,28 @@ def cluster_articles_with_groq(articles, company_name):
             "source": art["source"]
         })
 
-    # Total input text payload size is now strictly clamped under ~1,000 characters (~250 tokens)
-    print(f"Token Guard: Clean string payload size sent to Groq: {len(json.dumps(token_proof_payload))} characters.")
-
-    # 3. Compact prompt optimized for minimized context overhead
     token_proof_payload = filter_unique_news(token_proof_payload)
+    
+    response_schema = """
+        {
+        "name": "<company_name>",
+        "type": "root",
+        "children": [
+            {
+            "name": "<cluster_name>",
+            "type": "theme",
+            "children": [
+                {
+                "name": "<exact_article_title>",
+                "id": "<article_id>",
+                "source": "<source>",
+                "type": "article"
+                }
+            ]
+            }
+        ]
+        }
+    """
     
     prompt = f"""
     You are a data engineer structuring news for a D3.js Hierarchical Tree Chart.
@@ -50,27 +61,26 @@ def cluster_articles_with_groq(articles, company_name):
     {json.dumps(token_proof_payload, separators=(',', ':'))}
     
     Task:
-        You are a precise data analyst. Your task is to cluster a list of articles into a structured JSON tree.
+    You are a news clustering engine.
 
-        You are a news clustering engine.
+        Given a list of deduplicated news articles
 
-        Given a list of already deduplicated articles {token_proof_payload}, group them into 2-6 broad themes based on their primary subject matter.
+        Cluster the articles into 2–6 major news themes and return ONLY a D3.js hierarchy JSON.
 
         Rules:
-        - Each article must belong to exactly one theme.
-        - Articles within a theme should share a common topic, event category, or business context.
-        - Theme names should be short, clear, and descriptive (2-4 words, Title Case).
-        - Do not create duplicate themes with similar meanings.
-        - If an article does not fit any group, place it as a standalone article under the root.
 
-        Return a JSON tree using the required schema.
+        - Categorize the articles into 2-6 clusters, based on the common event/progress/topic/business context they share.
+        - The output schema is gven below
+        - Do not write duplicate articles
+        - The articles which do not share are standalone articles and should be placed in the new theme named 'standalone'.
+        
+        Output schema:
 
-        Output only valid JSON.
+        {response_schema}
+
+    Return valid JSON only. No explanations, markdown, or additional text.Output only valid JSON.
     """
     
-    print("Dispatching minimized token-proof payload to Groq...")
-    # print(token_proof_payload)
-    # return
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         temperature=0.1, 
@@ -86,8 +96,6 @@ def cluster_articles_with_groq(articles, company_name):
     try:
         tree_data = json.loads(response.choices[0].message.content)
         
-        # 4. RE-INJECT CACHED URLS LOCALLY
-        # Walk through the generated D3 tree and map the URLs back onto the leaf nodes
         if "children" in tree_data:
             for child in tree_data["children"]:
                 if child.get("type") in ["article", "standalone_article"] and child.get("id") in url_cache:
@@ -97,12 +105,8 @@ def cluster_articles_with_groq(articles, company_name):
                         if sub_child.get("id") in url_cache:
                             sub_child["url"] = url_cache[sub_child["id"]]
                             
-        print("Successfully re-mapped cached URLs onto structured tree output.")
-        
-        tree_data = filter_unique_news(tree_data)
         return tree_data
     except Exception as e:
-        print(f"Error parsing structural output payload: {e}")
         return {"name": company_name, "type": "root", "children": []}
 
 

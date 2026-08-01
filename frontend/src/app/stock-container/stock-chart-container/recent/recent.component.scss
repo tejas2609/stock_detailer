@@ -1,0 +1,134 @@
+.card-container{
+  padding: 3% 0;
+  .heading{
+    font-family: title-text;
+    font-size: 1.3rem;
+  }
+  .cards{
+    margin-top: 1%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+.card {
+  position: relative;
+  width: 360px;
+  height: 120px;
+  background: #1a1a1a;
+  border-radius: 18px;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  color: #ccc;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+/* === RINGS === */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 28px solid rgba(255,255,255,0.07);
+}
+
+.ring-1 {
+  width: 260px;
+  height: 260px;
+  top: -120px;
+  left: -160px;
+  border: 20px solid rgba(248, 250, 252, 0.4);
+}
+
+.ring-2 {
+  width: 220px;
+  height: 220px;
+  top: 10px;
+  right: -80px;
+  border-color: rgba(191, 221, 218, 0.4);
+}
+
+.ring-3 {
+  width: 200px;
+  height: 200px;
+  bottom: -60px;
+  left: 50px;
+  background: transparent;
+  border-color: rgba(248, 250, 252, 0.4);
+}
+
+/* === CONTENT === */
+.card-content {
+  position: relative;
+  z-index: 2;
+  padding: 22px 26px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  letter-spacing: 0.5px;
+}
+
+.nfc {
+  font-size: 18px;
+  color: #aaa;
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.label {
+  font-size: 9px;
+  color: #666;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.name {
+  font-size: 14px;
+  color: #ccc;
+  font-weight: 400;
+}
+
+/* Mastercard circles */
+.mastercard {
+  display: flex;
+  position: relative;
+}
+
+.mc-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+.mc-left {
+  background: #eb001b;
+  position: relative;
+  z-index: 1;
+}
+
+.mc-right {
+  background: #f79e1b;
+  margin-left: -10px;
+}

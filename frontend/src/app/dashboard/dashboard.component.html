@@ -1,0 +1,100 @@
+<div class="dashboard-component">
+    <div class="details">        
+        <div class="details-panel">
+            <div class="card investment">
+                <div class="card-header">
+                    <h3>Current Investments</h3>
+                </div>
+                <div class="card-details">
+                    <div class="card-detail-headline">
+                        <p>Total Investments</p>
+                        <h3>36000.00 </h3>
+                    </div>
+                    <div class="card-detail-headline">
+                        <p>Current Standing</p>
+                        <h3>30000.00 </h3>
+                    </div>
+                    <div class="card-detail-headline">
+                        <p>Total P/L</p>
+                        <h3>-6000.00 <span class="percentage">(-10%)</span></h3>
+                    </div>
+                    <div class="card-detail-headline">                    
+                        <div
+                            echarts
+                            [options]="dummychartOption"
+                            class="dummychart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Category Investments</h3>
+                </div>
+                <div class="card-details">
+                    <div class="card-detail-headline">
+                        <div
+                            echarts
+                            [options]="categoryChartOption"
+                            class="chart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="details-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Current Investments</h3>
+                    <div class="card-details">
+                        <div class="card-detail-headline">
+                            <p>Total Investments</p>
+                            <h3>36000.00 </h3>
+                        </div>
+                        <div class="card-detail-headline">
+                            <p>Current Standing</p>
+                            <h3>30000.00 </h3>
+                        </div>
+                        <div class="card-detail-headline">
+                            <p>Total P/L</p>
+                            <h3>-6000.00 </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Current Investments</h3>
+                    <div class="card-details">
+                        <div class="card-detail-headline">
+                            <p>Total Investments</p>
+                            <h3>36000.00 </h3>
+                        </div>
+                        <div class="card-detail-headline">
+                            <p>Current Standing</p>
+                            <h3>30000.00 </h3>
+                        </div>
+                        <div class="card-detail-headline">
+                            <p>Total P/L</p>
+                            <h3>-6000.00 </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="news-panel">
+        <div class="news-header">
+            <h3>Latest News</h3>
+        </div>
+        <div class="news-container">
+            <div class="news-card" *ngFor="let _ of [].constructor(50)">
+                <div class="news-content">
+                    <p class="type">NEWS TYPE</p>
+                    <p class="news">Microsoft made stock market history this week by achieving the largest single-day gain in market value ever recorded by a publicly traded company, according to a report by Bloomberg. </p>
+                    <p class="link">Read more...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

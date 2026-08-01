@@ -31,6 +31,12 @@ export class StockHttpService {
         );
     }
 
+    getStockNews(stock: string){
+        return this.http.get(`${this.backendURL}/stock/news`, {params: {stock: stock}}).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     private handleError(error: HttpErrorResponse) {
         let errorMsg = 'Unknown error!';
         if (error.error instanceof ErrorEvent) {
@@ -40,6 +46,6 @@ export class StockHttpService {
         }
         console.error(errorMsg);
         return throwError(() => new Error(errorMsg));
-  }
+    }
 
 }

@@ -1,1 +1,13 @@
-<div #graphContainer class="graph-wrapper"></div>
+
+<div #graphContainer class="graph-wrapper" *ngIf="!loading && data"></div>
+<div class="no-data" *ngIf="!loading && !data">Select a stock to dive further...</div>
+<div class="loading-wrapper" *ngIf="loading">
+    <mat-spinner diameter="30"></mat-spinner>
+    <div class="message-container">
+        <div
+            class="loading-message"
+            [@messageAnimation]="currentIndex">
+            {{ messages[currentIndex] }}
+        </div>
+    </div>
+</div>

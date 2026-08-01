@@ -1,5 +1,5 @@
 
-<div class="stock-graph-container glass-bg-no-white">
+<div class="stock-graph-container">
     <form class="options" [formGroup]="graphForm">
         <div class="option period">
             <div class="select-container">
@@ -29,8 +29,11 @@
         class="chart"
         *ngIf="!loadingGraph">
     </div>
+    <div class="no-data" *ngIf="!loadingGraph && !this.dataValues">
+        Select the stock to see the trend...
+    </div>
     <div class="loader-graph" *ngIf="loadingGraph">
-        <mat-spinner diameter="40"></mat-spinner>
+        <mat-spinner [style]="{'color': 'var(--sidebar-bg-color)'}" diameter="40"></mat-spinner>
     </div>
 </div>
 

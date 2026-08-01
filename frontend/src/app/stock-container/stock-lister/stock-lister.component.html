@@ -1,6 +1,59 @@
-<div class="stock-selector-container"> 
-    <p>Select a stock</p>
-    <select (change)="selectStock($event)">
+<!-- <div class="stock-selector-container"> 
+    <select (change)="selectStock($event)" placeholder="Select a stock">
         <option *ngFor="let stock of stocks" [value]="stock.symbol" >{{stock.symbol}}</option>
     </select>
+</div> -->
+<div class="custom-select">
+
+  <div
+    class="select-box"
+    (click)="toggleDropdown()">
+
+    <span
+      class="placeholder"
+      [class.selected]="selectedOption"
+      style="display: flex; align-items: center; gap: 2%; width: 100%;">
+
+        <span class="material-symbols-outlined thin-icon">search</span>
+      {{ selectedOption || 'Select Stock' }}
+
+    </span>
+
+    <span class="material-symbols-outlined arrow">
+      {{ isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+    </span>
+
+  </div>
+
+  <div
+    class="dropdown"
+    *ngIf="isOpen">
+
+    <div class="search-container">
+
+      <span class="material-symbols-outlined search-icon">
+        search
+      </span>
+
+      <input
+        type="text"
+        placeholder="Search..."
+        [(ngModel)]="searchText"
+        (input)="filterOptions()">
+
+    </div>
+
+    <cdk-virtual-scroll-viewport itemSize="48" class="options-viewport">
+      <div
+        class="option"
+        *cdkVirtualFor="let stock of filteredStocks; trackBy: trackBySymbol"
+        (click)="selectStock(stock.symbol)">
+
+        {{stock.symbol}} - {{stock.company_name}}
+
+      </div>
+    </cdk-virtual-scroll-viewport>
+
+  </div>
+
 </div>

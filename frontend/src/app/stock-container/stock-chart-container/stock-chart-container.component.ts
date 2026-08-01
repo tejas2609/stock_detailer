@@ -6,11 +6,12 @@ import { StockGraphComponent } from "./stock-graph/stock-graph.component";
 import { StockListerComponent } from "../stock-lister/stock-lister.component";
 import { GraphContainerComponent } from "../../graph-container/graph-container.component";
 import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { RecentComponent } from "./recent/recent.component";
 
 @Component({
   selector: 'app-stock-chart-container',
   standalone: true,
-  imports: [SharedModule, StockDetailsComponent, StockGraphComponent, StockListerComponent, GraphContainerComponent, PieChartComponent],
+  imports: [SharedModule, StockDetailsComponent, StockGraphComponent, StockListerComponent, GraphContainerComponent, PieChartComponent, RecentComponent],
   templateUrl: './stock-chart-container.component.html',
   styleUrl: './stock-chart-container.component.scss'
 })

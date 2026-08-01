@@ -56,6 +56,7 @@ export class StockGraphComponent implements OnInit {
       period: new FormControl('1mo'),
       interval: new FormControl('1d'),
     })
+    let selectedStock = this.sharedService.getSelectedStock();
     this.sharedService.selectedStockDataEmitter.subscribe(
       (resp) => {
         this.dataValues = resp.map((obj: any) => obj['Close'])
